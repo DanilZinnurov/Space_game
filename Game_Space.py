@@ -7,6 +7,7 @@ from ship import Ship
 from bullet import Bullet
 from alien import Alien
 from button import Button
+from scoreboard import Scoreboard
 
 
 class AlienInvasion:
@@ -23,6 +24,7 @@ class AlienInvasion:
         #self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption("Alien Invasion")
         self.stats = GameStats(self)
+        self.sb = Scoreboard(self)
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
@@ -76,6 +78,8 @@ class AlienInvasion:
 
 
     def start_game(self):
+        self.settings.initialize_dynamic_settings()
+
         self.stats.reset_stats()
         self.stats.game_active = True
 
@@ -85,6 +89,7 @@ class AlienInvasion:
         self._create_fleet()
         self.ship.center_ship()
         pygame.mouse.set_visible(False)
+        self.sb.prep_score()
 
 
     def _check_keydawn_events(self, event):
@@ -122,7 +127,9 @@ class AlienInvasion:
     def _check_play_button(self, mouse_pos):
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
+            #self.settings.initialize_dynamic_settings()
             self.start_game()
+            #self.sb.prep_score()
 
 
     def _update_screen(self):
@@ -132,6 +139,8 @@ class AlienInvasion:
             bullet.draw_bullet()
 
         self.aliens.draw(self.screen)
+
+        self.sb.show_score()
 
         if not self.stats.game_active:
             self.play_button.draw_button()
@@ -148,8 +157,14 @@ class AlienInvasion:
 
     def _check_bullet_alien_collisions(self):
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+        if collisions:
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
+            self.sb.prep_score()
+            self.sb.check_high_score()
         if not self.aliens:
             self.bullets.empty()
+            self.settings.increase_speed()
             self._create_fleet()
 
 
