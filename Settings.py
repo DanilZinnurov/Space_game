@@ -21,13 +21,14 @@ class settings:
         self.speedup_scale = 1.1
 
         self.score_scale = 1.5
+        self.name_file = "record.txt"
 
         self.initialize_dynamic_settings()
 
     def initialize_dynamic_settings(self):
         self.ship_speed = 1.5
         self.bullet_speed = 3.0
-        self.alien_speed = 1.0
+        self.alien_speed = 10.0
         self.fleet_direction = 1
         self.alien_points = 50
 
