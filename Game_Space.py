@@ -90,6 +90,8 @@ class AlienInvasion:
         self.ship.center_ship()
         pygame.mouse.set_visible(False)
         self.sb.prep_score()
+        self.sb.prep_level()
+        self.sb.prep_ships()
 
 
     def _check_keydawn_events(self, event):
@@ -167,6 +169,9 @@ class AlienInvasion:
             self.settings.increase_speed()
             self._create_fleet()
 
+            self.stats.level += 1
+            self.sb.prep_level()
+
 
     def _check_aliens_bottom(self):
         screen_rect = self.screen.get_rect()
@@ -178,6 +183,7 @@ class AlienInvasion:
     def _ship_hit(self):
         if self.stats.ships_left > 0:
             self.stats.ships_left -= 1
+            self.sb.prep_ships()
             self.aliens.empty()
             self.bullets.empty()
 
