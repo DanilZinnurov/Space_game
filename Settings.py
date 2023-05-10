@@ -1,3 +1,5 @@
+from pygame import mixer
+
 class settings:
 
     def __init__(self):
@@ -24,11 +26,17 @@ class settings:
         self.name_file = "record.txt"
 
         self.initialize_dynamic_settings()
+        self.sound_fire = mixer.Sound("content_sndLaser.wav")
+        self.sound_fire.set_volume(0.05)
+        self.sound_explode = mixer.Sound("odinochnyiy-vzryiv.wav")
+        self.sound_explode.set_volume(0.1)
+        self.sound_start = mixer.Sound("content_sndBtnDown.wav")
+        self.sound_start.set_volume(0.3)
 
     def initialize_dynamic_settings(self):
         self.ship_speed = 1.5
         self.bullet_speed = 3.0
-        self.alien_speed = 10.0
+        self.alien_speed = 1.0
         self.fleet_direction = 1
         self.alien_points = 50
 

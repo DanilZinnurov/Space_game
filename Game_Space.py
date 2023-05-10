@@ -8,6 +8,7 @@ from bullet import Bullet
 from alien import Alien
 from button import Button
 from scoreboard import Scoreboard
+from pygame import mixer
 
 
 class AlienInvasion:
@@ -37,6 +38,7 @@ class AlienInvasion:
 
     def _fire_bullet(self):
         if len(self.bullets) <= self.settings.bullet_allowed:
+            self.settings.sound_fire.play()
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
@@ -92,6 +94,7 @@ class AlienInvasion:
         self.sb.prep_score()
         self.sb.prep_level()
         self.sb.prep_ships()
+        self.settings.sound_start.play()
 
 
     def _check_keydawn_events(self, event):
@@ -161,6 +164,7 @@ class AlienInvasion:
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
         if collisions:
             for aliens in collisions.values():
+                self.settings.sound_explode.play()
                 self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score()
             self.sb.check_high_score()
