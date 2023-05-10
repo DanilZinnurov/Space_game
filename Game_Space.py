@@ -192,6 +192,7 @@ class AlienInvasion:
 
             sleep(0.5)
         else:
+            open(self.settings.name_file, "w").write(str(self.stats.high_score))
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
 
